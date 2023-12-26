@@ -1,6 +1,7 @@
 export default class Camera {
-    constructor(videoElementId) {
-        this.videoElement = document.getElementById(videoElementId);
+    constructor() {
+        this.videoElement = document.createElement('video');
+        this.videoElement.autoplay = true;
     }
 
     async activateCamera() {
@@ -12,5 +13,11 @@ export default class Camera {
                 console.error("Falha ao ativar a câmera:", err);
             }
         }
+    }
+    render() {
+        const container = document.createElement('div');
+        container.className = 'camera-container';
+        container.appendChild(this.videoElement);
+        return container;
     }
 }

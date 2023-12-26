@@ -6,7 +6,10 @@ body, html {
   background-color: #f4f4f4;
 }
 
-
+video{
+  width: 500px;
+  height: 300px;
+}
 .camera-container {
   position: relative;
   width: 500px;
@@ -266,4 +269,17 @@ input[type="text"]:not(:placeholder-shown) + label, input[type="number"]:not(:pl
   background: #fff;
   border-bottom: none;
   font-weight: bold;
+}
+#loadingIndicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  background-color: rgba(40, 34, 34, 0.8);
+  transition: background-color 0.3s ease;
+  color: #ddd;
+  border-radius: 5px;
+  text-align: center;
+  z-index: 1000;
 }
