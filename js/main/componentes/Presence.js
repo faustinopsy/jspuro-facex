@@ -1,5 +1,6 @@
 export default class Presence {
-    constructor(apiUrl) {
+    constructor(apiUrl,apiStrategy) {
+        this.apiStrategy = apiStrategy;
         this.apiUrl = apiUrl;
         this.presencas = [];
         this.registroPesquisa = '';
@@ -66,61 +67,14 @@ export default class Presence {
     }
 
     async registrarPresenca (idUsuario, tipo){
-        try {
-            const response = await fetch(`${this.apiUrl}Presenca.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id_usuario: idUsuario, tipo: tipo }),
-            });
-    
-            const data = await response.json();
-            if (data.status) {
-                alert('Presença registrada');
-                return data.status
-            } 
-        } catch (error) {
-            console.error('Erro ao registrar presença:', error);
-        }
+        return await this.apiStrategy.registrarPresenca (idUsuario, tipo);
     };
     async buscarPresencasPorRegistro (registro, dataregistro){
-        try {
-            let url = `${this.apiUrl}Presenca.php`;
-            const params = new URLSearchParams();
-            if (registro) params.append('registro', registro);
-            if (dataregistro) params.append('data', dataregistro);
-            url += '?' + params.toString();
-    
-            const response = await fetch(url);
-            const data = await response.json();
-            console.log('Presenças recuperadas:', data.presencas);
-            return data.presencas;
-        } catch (error) {
-            console.error('Erro ao buscar presenças:', error);
-            return [];
-        }
+        return await this.apiStrategy.buscarPresencasPorRegistro (registro, dataregistro);
     };
     
     async atualizarPresenca(id, novaDataHora){
-        try {
-            const response = await fetch(`${this.apiUrl}Presenca.php`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id, novaDataHora }),
-            });
-    
-            const data = await response.json();
-            if (data.status) {
-                console.log('Presença atualizada:', data);
-            } else {
-                console.log('Erro ao atualizar presença:', data.error);
-            }
-        } catch (error) {
-            console.error('Erro ao atualizar presença:', error);
-        }
+        return await this.apiStrategy.atualizarPresenca(id, novaDataHora);
     };
     render() {
         const container = document.createElement('div');

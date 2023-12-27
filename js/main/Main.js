@@ -7,13 +7,22 @@ import User from './componentes/User.js';
 import Auth from './componentes/Auth.js';
 import * as faceapi from '../face-api.js';
 import ModelLoader from './ModelLoader.js';
+import NodeApiStrategy from './componentes/NodeApiStrategy.js';
+import PhpApiStrategy from './componentes/PhpApiStrategy.js';
 
-const userApiUrl = 'https://webcrud.faustinopsy.com/app/';
+
 const camera = new Camera();
 const mainContainer = document.getElementById('main-container');
 const isUserLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 const modelLoader = new ModelLoader(faceapi);
 modelLoader.loadModels();
+
+const backendType = 'php'; // 'node'
+const local = 's'; // 'node'
+const userApiUrl = local === 's' ? 'http://localhost/app/' : 'https://webcrud.faustinopsy.com/app/';
+const apiStrategy = backendType === 'php' ? new PhpApiStrategy(userApiUrl) : new NodeApiStrategy(userApiUrl);
+
+
 function navigate(link) {
     console.log(link)
     if (!isUserLoggedIn && !link) {
@@ -27,11 +36,11 @@ function navigate(link) {
     mainContainer.innerHTML = '';
     let componentInstance;
     switch (link) {
-        case 'register': componentInstance = new FaceRegister(userApiUrl,faceapi); break;
-        case 'recognize': componentInstance = new Recognition(camera,userApiUrl,faceapi); break;
-        case 'presence': componentInstance = new Presence(userApiUrl); break;
+        case 'register': componentInstance = new FaceRegister(userApiUrl,faceapi,apiStrategy); break;
+        case 'recognize': componentInstance = new Recognition(camera,userApiUrl,faceapi,apiStrategy); break;
+        case 'presence': componentInstance = new Presence(userApiUrl,apiStrategy); break;
         case 'users':
-            const userComponent = new User(userApiUrl);
+            const userComponent = new User(userApiUrl,apiStrategy);
             userComponent.render().then(renderedElement => {
                 mainContainer.appendChild(renderedElement);
             });

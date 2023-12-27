@@ -1,80 +1,25 @@
 export default class User {
-    constructor(apiUrl) {
+    constructor(apiUrl, apiStrategy) {
         this.apiUrl = apiUrl;
+        this.apiStrategy = apiStrategy;
     }
 
     async fetchUsers() {
-        try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php`);
-            const data = await response.json();
-            console.log('Usuários recuperados:', data.usuarios);
-            return data.usuarios;
-        } catch (error) {
-            console.error('Erro ao buscar usuários:', error);
-            return [];
-        }
-    }
-    async cadastrarUsuario(usuario) {
-        try {
-            const usuarioComAcao = {
-                ...usuario,
-                acao: 'cadastrar'
-            };
-            const response = await fetch(`${this.apiUrl}Usuarios.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(usuarioComAcao),
-            });
+        return await this.apiStrategy.fetchUsers();
+      }
     
-            const data = await response.json();
-            if(data.status){
-                console.log('Usuário cadastrado:', data);
-                return data.status
-            }else{
-                alert(data.message)
-            }
-           
-        } catch (error) {
-            console.error('Erro ao cadastrar usuário:', error);
-        }
-    };
+      async cadastrarUsuario(usuario) {
+        return await this.apiStrategy.cadastrarUsuario(usuario);
+      }
     async buscarFaces() {
-        try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php`);
-            const data = await response.json();
-            console.log('Usuários recuperados:', data.usuarios);
-            return data.usuarios;
-        } catch (error) {
-            console.error('Erro ao buscar usuários:', error);
-            return [];
-        }
+        return await this.apiStrategy.buscarFaces();
     };
 
     async buscarUsuariosRelatorio(){
-        try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php?relatorio=1`);
-            const data = await response.json();
-            console.log('Usuários recuperados:', data.usuarios);
-            return data.usuarios;
-        } catch (error) {
-            console.error('Erro ao buscar usuários:', error);
-            return [];
-        }
+        return await this.apiStrategy.buscarUsuariosRelatorio();
     };
     async excluirUsuario (id){
-        try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php?id=${id}`, {
-                method: 'DELETE',
-            });
-    
-            const data = await response.json();
-            console.log('Usuário excluído:', data);
-        } catch (error) {
-            console.error('Erro ao excluir usuário:', error);
-    
-        }
+        return await this.apiStrategy.excluirUsuario(id);
     };
 
     async render() {

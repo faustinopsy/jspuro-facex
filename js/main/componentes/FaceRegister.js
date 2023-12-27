@@ -1,8 +1,6 @@
 import User from './User.js'; 
 export default class FaceRegister {
     constructor(userApiUrl, faceapi) {
-        // this.modelLoader = new ModelLoader();
-        // this.loadModels();
         this.userApi = new User(userApiUrl);
         this.captureData = [];
         this.formData = { name: '', number: '' };
@@ -45,7 +43,7 @@ export default class FaceRegister {
                 this.captureData = [];
                 this.formData = { name: '', number: '' };
                 this.updateCapturesInfo();
-                this.clearFormFields();  // Método para limpar os campos do formulário
+                this.clearFormFields(); 
             }
             
         }
