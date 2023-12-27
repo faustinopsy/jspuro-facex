@@ -1,6 +1,8 @@
 export default class Auth {
-    constructor(apiUrl) {
+    constructor(apiUrl, navbar,onLoginSuccess) {
         this.apiUrl = apiUrl;
+        this.navbar = navbar;
+        this.onLoginSuccess = onLoginSuccess;
         this.activeTab = 'login';
     }
 
@@ -52,7 +54,10 @@ export default class Auth {
                     ...data,
                     message: 'Logado com sucesso'
                 };
-                alert(mensagem.message) 
+                localStorage.setItem('isLoggedIn', 'true');
+                alert(mensagem.message) ;
+                this.navbar.update(true);
+                this.onLoginSuccess();
             }else{
                 const mensagem = {
                     ...data,

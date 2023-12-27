@@ -11,11 +11,19 @@ import ModelLoader from './ModelLoader.js';
 const userApiUrl = 'https://webcrud.faustinopsy.com/app/';
 const camera = new Camera();
 const mainContainer = document.getElementById('main-container');
-
+const isUserLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 const modelLoader = new ModelLoader(faceapi);
 modelLoader.loadModels();
-
 function navigate(link) {
+    console.log(link)
+    if (!isUserLoggedIn && !link) {
+        link = 'login'; 
+    }
+    if (link === 'logout') {
+        localStorage.removeItem('isLoggedIn'); 
+        location.reload();
+        return;
+    }
     mainContainer.innerHTML = '';
     let componentInstance;
     switch (link) {
@@ -29,7 +37,8 @@ function navigate(link) {
             });
             break;
         case 'login':
-            const authComponent = new Auth(userApiUrl);
+            const onLoginSuccess = () => navigate('presence'); 
+            const authComponent = new Auth(userApiUrl, navbar, onLoginSuccess);
             mainContainer.appendChild(authComponent.render());
             break;
     }
@@ -38,5 +47,6 @@ function navigate(link) {
     }
 }
 
-const navbar = new Navbar(navigate);
+const navbar = new Navbar(navigate,isUserLoggedIn);
 document.body.insertBefore(navbar.render(), mainContainer);
+navigate(false)
