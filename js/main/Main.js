@@ -4,6 +4,7 @@ import FaceRegister from './componentes/FaceRegister.js';
 import Recognition from './componentes/Recognition.js';
 import Presence from './componentes/Presence.js';
 import User from './componentes/User.js';
+import Auth from './componentes/Auth.js';
 import * as faceapi from '../face-api.js';
 import ModelLoader from './ModelLoader.js';
 
@@ -26,6 +27,10 @@ function navigate(link) {
             userComponent.render().then(renderedElement => {
                 mainContainer.appendChild(renderedElement);
             });
+            break;
+        case 'login':
+            const authComponent = new Auth(userApiUrl);
+            mainContainer.appendChild(authComponent.render());
             break;
     }
     if (componentInstance) {

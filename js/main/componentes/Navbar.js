@@ -11,6 +11,7 @@ export default class Navbar {
             <a href="#" data-link="recognize">Reconhecer e Registrar Presença</a>
             <a href="#" data-link="presence">Presenças</a>
             <a href="#" data-link="users">Usuários</a>
+            <a href="#" data-link="login">Login</a>
             <span class="hamburger-icon">&#9776;</span>
         `;
         navbarElement.querySelectorAll('a').forEach(linkElement => {
