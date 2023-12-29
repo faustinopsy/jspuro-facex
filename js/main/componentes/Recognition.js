@@ -1,11 +1,12 @@
 import User from './User.js';
 import Presenca from './Presence.js';
 export default class Recognition {
-    constructor(camera, userApiUrl,faceapi) {
+    constructor(camera, userApiUrl,faceapi,apiStrategy) {
+        this.apiStrategy = apiStrategy;
         this.camera = camera;
         this.camera.activateCamera();
-        this.userApi = new User(userApiUrl);
-        this.presenca = new Presenca(userApiUrl);
+        this.userApi = new User(userApiUrl, apiStrategy);
+        this.presenca = new Presenca(userApiUrl, apiStrategy);
         this.buscarFaces();
         this.usuarios = [];
         this.detections= null;

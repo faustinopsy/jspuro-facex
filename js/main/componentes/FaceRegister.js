@@ -1,7 +1,8 @@
 import User from './User.js'; 
 export default class FaceRegister {
-    constructor(userApiUrl, faceapi) {
-        this.userApi = new User(userApiUrl);
+    constructor(userApiUrl, faceapi,apiStrategy) {
+        this.apiStrategy = apiStrategy;
+        this.userApi = new User(userApiUrl, apiStrategy);
         this.captureData = [];
         this.formData = { name: '', number: '' };
         this.totalCaptures = 3;
@@ -40,6 +41,7 @@ export default class FaceRegister {
             };
             const response = await this.userApi.cadastrarUsuario(usuario);
             if (response) {  
+                alert("cadastrado com sucesso")
                 this.captureData = [];
                 this.formData = { name: '', number: '' };
                 this.updateCapturesInfo();

@@ -1,4 +1,4 @@
-class NodeApiStrategy {
+export default class NodeApiStrategy {
     constructor(apiUrl) {
         this.apiUrl = apiUrl;
     }
@@ -8,7 +8,11 @@ class NodeApiStrategy {
         const data = await response.json();
         return data.usuarios;
     }
-
+    async buscarFaces() {
+        const response = await fetch(`${this.apiUrl}/users/faces`);
+        const data = await response.json();
+        return data.usuarios;
+    }
     async cadastrarUsuario(usuario) {
         const response = await fetch(`${this.apiUrl}/users`, {
             method: 'POST',
@@ -19,12 +23,6 @@ class NodeApiStrategy {
         });
         const data = await response.json();
         return data;
-    }
-
-    async buscarFaces() {
-        const response = await fetch(`${this.apiUrl}/users/faces`);
-        const data = await response.json();
-        return data.usuarios;
     }
 
     async registrarPresenca(idUsuario, tipo) {
@@ -69,11 +67,76 @@ class NodeApiStrategy {
         return data.usuarios;
     }
 
-    async excluirUsuario(id) {
-        const response = await fetch(`${this.apiUrl}/users/${id}`, {
+    async excluirUsuario(registro) {
+        const response = await fetch(`${this.apiUrl}/users/${registro}`, {
             method: 'DELETE'
         });
         const data = await response.json();
         return data;
     }
+    async registrarUsuario(usuario){
+        try {
+            const response = await fetch(`${this.apiUrl}/users/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ...usuario, acao: 'registrar' }),
+            });
+    
+            const data = await response.json();
+            if(data.status){
+                console.log('Registrado com sucesso');
+                const mensagem = {
+                    ...data,
+                    message: 'Cadastrado com sucesso'
+                };
+                alert(mensagem.message) 
+            }else{
+                const mensagem = {
+                    ...data,
+                    message: 'Já existe registro para o usuário'
+                };
+                alert(mensagem.message) 
+            }
+            
+        } catch (error) {
+            console.error('Erro ao registrar usuário:', error);
+            return error
+        }
+    };
+    async fazerLogin(credenciais) {
+        try {
+            const response = await fetch(`${this.apiUrl}/users/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ...credenciais, acao: 'login' }),
+            });
+    
+            const data = await response.json();
+            if(data.status){
+                console.log('Logado com sucesso');
+                const mensagem = {
+                    ...data,
+                    message: 'Logado com sucesso'
+                };
+                localStorage.setItem('isLoggedIn', 'true');
+                alert(mensagem.message) ;
+                this.navbar.update(true);
+                this.onLoginSuccess();
+            }else{
+                const mensagem = {
+                    ...data,
+                    message: 'Não é possivel logar'
+                };
+                alert(mensagem.message) 
+            }
+           
+        } catch (error) {
+            console.error('Erro ao fazer login:', error);
+            return error
+        }
+    };
 }

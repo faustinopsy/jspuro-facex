@@ -1,4 +1,4 @@
-class PhpApiStrategy {
+export default class PhpApiStrategy {
     constructor(apiUrl) {
       this.apiUrl = apiUrl;
     }
@@ -18,7 +18,7 @@ class PhpApiStrategy {
         body: JSON.stringify({ ...usuario, acao: 'cadastrar' }),
       });
       const data = await response.json();
-      return data;
+      return data.status;
     }
     async buscarFaces() {
         try {
@@ -110,6 +110,70 @@ class PhpApiStrategy {
         } catch (error) {
             console.error('Erro ao excluir usuário:', error);
     
+        }
+    };
+    async registrarUsuario(usuario){
+        try {
+            const response = await fetch(`${this.apiUrl}Usuarios.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ...usuario, acao: 'registrar' }),
+            });
+    
+            const data = await response.json();
+            if(data.status){
+                console.log('Registrado com sucesso');
+                const mensagem = {
+                    ...data,
+                    message: 'Cadastrado com sucesso'
+                };
+                alert(mensagem.message) 
+            }else{
+                const mensagem = {
+                    ...data,
+                    message: 'Já existe registro para o usuário'
+                };
+                alert(mensagem.message) 
+            }
+            
+        } catch (error) {
+            console.error('Erro ao registrar usuário:', error);
+            return error
+        }
+    };
+    async fazerLogin(credenciais) {
+        try {
+            const response = await fetch(`${this.apiUrl}Usuarios.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ...credenciais, acao: 'login' }),
+            });
+    
+            const data = await response.json();
+            if(data.status){
+                console.log('Logado com sucesso');
+                const mensagem = {
+                    ...data,
+                    message: 'Logado com sucesso'
+                };
+                localStorage.setItem('isLoggedIn', 'true');
+                alert(mensagem.message) ;
+               return true;
+            }else{
+                const mensagem = {
+                    ...data,
+                    message: 'Não é possivel logar'
+                };
+                alert(mensagem.message) 
+            }
+           
+        } catch (error) {
+            console.error('Erro ao fazer login:', error);
+            return error
         }
     };
   }

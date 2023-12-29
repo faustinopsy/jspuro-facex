@@ -1,5 +1,6 @@
 export default class Auth {
-    constructor(apiUrl, navbar,onLoginSuccess) {
+    constructor(apiUrl, navbar,onLoginSuccess, apiStrategy) {
+        this.apiStrategy = apiStrategy;
         this.apiUrl = apiUrl;
         this.navbar = navbar;
         this.onLoginSuccess = onLoginSuccess;
@@ -7,69 +8,15 @@ export default class Auth {
     }
 
     async registrarUsuario(usuario){
-        try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...usuario, acao: 'registrar' }),
-            });
-    
-            const data = await response.json();
-            if(data.status){
-                console.log('Registrado com sucesso');
-                const mensagem = {
-                    ...data,
-                    message: 'Cadastrado com sucesso'
-                };
-                alert(mensagem.message) 
-            }else{
-                const mensagem = {
-                    ...data,
-                    message: 'Já existe registro para o usuário'
-                };
-                alert(mensagem.message) 
-            }
-            
-        } catch (error) {
-            console.error('Erro ao registrar usuário:', error);
-            return error
-        }
+        return await this.apiStrategy.registrarUsuario(usuario);
     };
     async fazerLogin(credenciais) {
-        try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...credenciais, acao: 'login' }),
-            });
-    
-            const data = await response.json();
-            if(data.status){
-                console.log('Logado com sucesso');
-                const mensagem = {
-                    ...data,
-                    message: 'Logado com sucesso'
-                };
-                localStorage.setItem('isLoggedIn', 'true');
-                alert(mensagem.message) ;
-                this.navbar.update(true);
-                this.onLoginSuccess();
-            }else{
-                const mensagem = {
-                    ...data,
-                    message: 'Não é possivel logar'
-                };
-                alert(mensagem.message) 
-            }
-           
-        } catch (error) {
-            console.error('Erro ao fazer login:', error);
-            return error
+        const resultado = await this.apiStrategy.fazerLogin(credenciais);
+        if(resultado){
+            this.navbar.update(true);
+            this.onLoginSuccess();
         }
+        
     };
 
     render() {

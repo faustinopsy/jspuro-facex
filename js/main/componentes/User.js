@@ -18,8 +18,8 @@ export default class User {
     async buscarUsuariosRelatorio(){
         return await this.apiStrategy.buscarUsuariosRelatorio();
     };
-    async excluirUsuario (id){
-        return await this.apiStrategy.excluirUsuario(id);
+    async excluirUsuario (registro){
+        return await this.apiStrategy.excluirUsuario(registro);
     };
 
     async render() {
@@ -50,7 +50,7 @@ export default class User {
 
     async confirmarExclusao(usuario) {
         if (confirm(`Tem certeza que deseja excluir o usuário ${usuario.nome}?`)) {
-            await this.excluirUsuario(usuario.id);
+            await this.excluirUsuario(usuario.registro);
             document.getElementById('main-container').innerHTML = '';
             document.getElementById('main-container').appendChild(await this.render());
         }

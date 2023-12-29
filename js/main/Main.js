@@ -17,14 +17,12 @@ const isUserLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 const modelLoader = new ModelLoader(faceapi);
 modelLoader.loadModels();
 
-const backendType = 'php'; // 'node'
-const local = 's'; // 'node'
-const userApiUrl = local === 's' ? 'http://localhost/app/' : 'https://webcrud.faustinopsy.com/app/';
+const backendType = 'node'; // 'node'
+const userApiUrl = backendType === 'php' ? 'http://localhost/app/' : 'http://localhost:3000';
 const apiStrategy = backendType === 'php' ? new PhpApiStrategy(userApiUrl) : new NodeApiStrategy(userApiUrl);
 
 
 function navigate(link) {
-    console.log(link)
     if (!isUserLoggedIn && !link) {
         link = 'login'; 
     }
@@ -47,7 +45,7 @@ function navigate(link) {
             break;
         case 'login':
             const onLoginSuccess = () => navigate('presence'); 
-            const authComponent = new Auth(userApiUrl, navbar, onLoginSuccess);
+            const authComponent = new Auth(userApiUrl, navbar, onLoginSuccess, apiStrategy);
             mainContainer.appendChild(authComponent.render());
             break;
     }
