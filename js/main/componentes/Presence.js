@@ -28,8 +28,8 @@ export default class Presence {
     renderPresencas() {
         const listContainer = document.getElementById('presencas-list');
         listContainer.innerHTML = ''; 
-
-        this.presencas.forEach(presenca => {
+        console.log(this.presencas)
+        this.presencas.presencas.forEach(presenca => {
             const listItem = document.createElement('li');
             listItem.textContent = `${presenca.nome} (${presenca.registro}) - `;
 

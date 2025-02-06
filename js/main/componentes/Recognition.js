@@ -24,9 +24,8 @@ export default class Recognition {
         }
 
         let matched = false;
-
         this.usuarios.forEach(async (userData) => {
-            userData.faces.forEach(async (faceArray) => {
+            userData.rostos.forEach(async (faceArray) => {
                 const faceDescriptor = new Float32Array(faceArray);
                 if (faceDescriptor.length === this.detections.descriptor.length) {
                     const distance = faceapi.euclideanDistance(faceDescriptor, this.detections.descriptor);

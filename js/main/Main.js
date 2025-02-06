@@ -10,15 +10,14 @@ import ModelLoader from './ModelLoader.js';
 import NodeApiStrategy from './componentes/NodeApiStrategy.js';
 import PhpApiStrategy from './componentes/PhpApiStrategy.js';
 
-
 const camera = new Camera();
 const mainContainer = document.getElementById('main-container');
 const isUserLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 const modelLoader = new ModelLoader(faceapi);
 modelLoader.loadModels();
 
-const backendType = 'node'; // 'node'
-const userApiUrl = backendType === 'php' ? 'http://localhost/app/' : 'http://localhost:3000';
+const backendType = 'php'; // 'node'
+const userApiUrl = "http://localhost:666/app/";
 const apiStrategy = backendType === 'php' ? new PhpApiStrategy(userApiUrl) : new NodeApiStrategy(userApiUrl);
 
 
@@ -33,6 +32,7 @@ function navigate(link) {
     }
     mainContainer.innerHTML = '';
     let componentInstance;
+    location.hash=link
     switch (link) {
         case 'register': componentInstance = new FaceRegister(userApiUrl,faceapi,apiStrategy); break;
         case 'recognize': componentInstance = new Recognition(camera,userApiUrl,faceapi,apiStrategy); break;
@@ -56,4 +56,4 @@ function navigate(link) {
 
 const navbar = new Navbar(navigate,isUserLoggedIn);
 document.body.insertBefore(navbar.render(), mainContainer);
-navigate(false)
+navigate(location.hash.substring(1))

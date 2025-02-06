@@ -4,13 +4,13 @@ export default class PhpApiStrategy {
     }
   
     async fetchUsers() {
-      const response = await fetch(`${this.apiUrl}Usuarios.php`);
+      const response = await fetch(`${this.apiUrl}UserRouter.php`);
       const data = await response.json();
       return data.usuarios;
     }
   
     async cadastrarUsuario(usuario) {
-      const response = await fetch(`${this.apiUrl}Usuarios.php`, {
+      const response = await fetch(`${this.apiUrl}UserRouter.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export default class PhpApiStrategy {
     }
     async buscarFaces() {
         try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php`);
+            const response = await fetch(`${this.apiUrl}UserRouter.php?relatorio`);
             const data = await response.json();
             console.log('Usuários recuperados:', data.usuarios);
             return data.usuarios;
@@ -33,7 +33,7 @@ export default class PhpApiStrategy {
     };
     async registrarPresenca (idUsuario, tipo){
         try {
-            const response = await fetch(`${this.apiUrl}Presenca.php`, {
+            const response = await fetch(`${this.apiUrl}PresencaRouter.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,17 +42,19 @@ export default class PhpApiStrategy {
             });
     
             const data = await response.json();
+            console.log(data)
             if (data.status) {
                 alert('Presença registrada');
                 return data.status
             } 
+            alert(data.message);
         } catch (error) {
             console.error('Erro ao registrar presença:', error);
         }
     };
     async buscarPresencasPorRegistro (registro, dataregistro){
         try {
-            let url = `${this.apiUrl}Presenca.php`;
+            let url = `${this.apiUrl}PresencaRouter.php`;
             const params = new URLSearchParams();
             if (registro) params.append('registro', registro);
             if (dataregistro) params.append('data', dataregistro);
@@ -70,7 +72,7 @@ export default class PhpApiStrategy {
     
     async atualizarPresenca(id, novaDataHora){
         try {
-            const response = await fetch(`${this.apiUrl}Presenca.php`, {
+            const response = await fetch(`${this.apiUrl}PresencaRouter.php`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +92,7 @@ export default class PhpApiStrategy {
     };
     async buscarUsuariosRelatorio(){
         try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php?relatorio=1`);
+            const response = await fetch(`${this.apiUrl}UserRouter.php?relatorio=1`);
             const data = await response.json();
             console.log('Usuários recuperados:', data.usuarios);
             return data.usuarios;
@@ -101,7 +103,7 @@ export default class PhpApiStrategy {
     };
     async excluirUsuario (id){
         try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php?id=${id}`, {
+            const response = await fetch(`${this.apiUrl}UserRouter.php?id=${id}`, {
                 method: 'DELETE',
             });
     
@@ -114,7 +116,7 @@ export default class PhpApiStrategy {
     };
     async registrarUsuario(usuario){
         try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php`, {
+            const response = await fetch(`${this.apiUrl}UserRouter.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -145,7 +147,7 @@ export default class PhpApiStrategy {
     };
     async fazerLogin(credenciais) {
         try {
-            const response = await fetch(`${this.apiUrl}Usuarios.php`, {
+            const response = await fetch(`${this.apiUrl}UserRouter.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

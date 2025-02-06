@@ -1,12 +1,12 @@
 
-const urlBase= "https://webcrud.faustinopsy.com/app/";
+export const urlBase= "http://localhost:666/app/";
 export const  cadastrarUsuario = async (usuario) => {
     try {
         const usuarioComAcao = {
             ...usuario,
             acao: 'cadastrar'
         };
-        const response = await fetch(`${urlBase}Usuarios.php`, {
+        const response = await fetch(`${urlBase}UserRouter.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export const  cadastrarUsuario = async (usuario) => {
 
 export const registrarPresenca = async (idUsuario, tipo) => {
     try {
-        const response = await fetch(`${urlBase}Presenca.php`, {
+        const response = await fetch(`${urlBase}PresencaRouter.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export const registrarPresenca = async (idUsuario, tipo) => {
 };
 export const buscarPresencasPorRegistro = async (registro, dataregistro) => {
     try {
-        let url = `${urlBase}Presenca.php`;
+        let url = `${urlBase}PresencaRouter.php`;
         const params = new URLSearchParams();
         if (registro) params.append('registro', registro);
         if (dataregistro) params.append('data', dataregistro);
@@ -64,7 +64,7 @@ export const buscarPresencasPorRegistro = async (registro, dataregistro) => {
 
 export const atualizarPresenca = async (id, novaDataHora) => {
     try {
-        const response = await fetch(`${urlBase}Presenca.php`, {
+        const response = await fetch(`${urlBase}PresencaRouter.php`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export const atualizarPresenca = async (id, novaDataHora) => {
 
 export const  buscarUsuarios = async () => {
     try {
-        const response = await fetch(`${urlBase}Usuarios.php`);
+        const response = await fetch(`${urlBase}UserRouter.php`);
         const data = await response.json();
         console.log('Usuários recuperados:', data.usuarios);
         return data.usuarios;
@@ -96,7 +96,7 @@ export const  buscarUsuarios = async () => {
 };
 export const  buscarUsuariosRelatorio = async () => {
     try {
-        const response = await fetch(`${urlBase}Usuarios.php?relatorio=1`);
+        const response = await fetch(`${urlBase}UserRouter.php?relatorio=1`);
         const data = await response.json();
         console.log('Usuários recuperados:', data.usuarios);
         return data.usuarios;
@@ -107,7 +107,7 @@ export const  buscarUsuariosRelatorio = async () => {
 };
 export const  excluirUsuario = async (id) => {
     try {
-        const response = await fetch(`${urlBase}Usuarios.php?id=${id}`, {
+        const response = await fetch(`${urlBase}UserRouter.php?id=${id}`, {
             method: 'DELETE',
         });
 
@@ -120,7 +120,7 @@ export const  excluirUsuario = async (id) => {
 };
 export const registrarUsuario = async (usuario) => {
     try {
-        const response = await fetch(`${urlBase}Usuarios.php`, {
+        const response = await fetch(`${urlBase}UserRouter.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ export const registrarUsuario = async (usuario) => {
 };
 export const fazerLogin = async (credenciais) => {
     try {
-        const response = await fetch(`${urlBase}Usuarios.php`, {
+        const response = await fetch(`${urlBase}UserRouter.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
